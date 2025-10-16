@@ -1,0 +1,7 @@
+{
+  "name": "Fichajes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
