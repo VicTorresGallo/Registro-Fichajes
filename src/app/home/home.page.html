@@ -1,25 +1,48 @@
-<ion-header [translucent]= "true">
+
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-    Inicio app fichajes
-    </ion-title>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
+    <ion-title>Control Horario</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:18px;align-items:stretch;">
 
-  <ion-button [routerLink]="['/fichar']" color="primary" expand="block">
-    Registrar Fichaje
-  </ion-button>
-  <ion-button [routerLink]="['/consultar']" color="secondary" expand = "block">
-    Consultar Fichajes
-  </ion-button>
+    <div style="text-align:center;">
+      <h2>¡Bienvenido!</h2>
+      <p class="ion-text-center">Selecciona una opción para continuar</p>
+    </div>
+
+    <ion-card button [routerLink]="['/fichar']" aria-label="Registrar fichaje">
+      <ion-card-header>
+        <ion-card-subtitle>Acción rápida</ion-card-subtitle>
+        <ion-card-title>Registrar fichaje</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Inicia o cierra tu fichaje. Se guardará la hora y la geolocalización.
+        <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+          <ion-button fill="outline" size="small">Ir a fichar</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-card button [routerLink]="['/consultar']" aria-label="Consultar fichajes">
+      <ion-card-header>
+        <ion-card-subtitle>Historial</ion-card-subtitle>
+        <ion-card-title>Consulta fichajes</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Consulta tus fichajes por día o por rango de fechas. Visualiza horas, trabajos y localizaciones.
+        <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+          <ion-button fill="outline" size="small">Ver fichajes</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" routerLink="/home/help" fill="clear" size="small">
+      ¿Necesitas ayuda?
+    </ion-button>
+
+  </div>
 </ion-content>

@@ -1,17 +1,88 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Fichar</ion-title>
+    <ion-title>Registrar fichaje</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Registra tu nuevo Fichaje</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <ion-button [routerLink]="['/home']" color="primary" expand="block">
-    Inicio
-  </ion-button>
+  <!-- SIMULACIÓN: Si NO hay fichaje activo (último > 12h) -->
+  <div *ngIf="!tieneFichajeActivo">
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Iniciar nuevo fichaje</ion-card-title>
+        <ion-card-subtitle>Selecciona el trabajo que vas a realizar</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <!-- Selección de trabajo -->
+        <ion-item>
+          <ion-label>Trabajo</ion-label>
+          <ion-select placeholder="Selecciona trabajo" [(ngModel)]="trabajoSeleccionado">
+            <!--<ion-select-option *ngFor="let t of trabajos" [value]="t.id">{{ t.nombre }}</ion-select-option>-->
+          </ion-select>
+        </ion-item>
+
+        <!-- Fecha y hora actual -->
+        <ion-item>
+          <ion-label>Fecha/Hora Entrada</ion-label>
+          <ion-note slot="end">{{ fechaHoraActual | date:'short' }}</ion-note>
+        </ion-item>
+
+        <!-- Geolocalización (simulada) -->
+        <ion-item>
+          <ion-label>Geolocalización</ion-label>
+          <ion-note slot="end">{{ latitud }}, {{ longitud }}</ion-note>
+        </ion-item>
+
+        <div class="ion-text-center ion-margin-top">
+          <ion-button expand="block" color="success" (click)="iniciarFichaje()">
+            Iniciar fichaje
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+    <div [routerLink]="['/home']"style="margin-top:12px;display:flex;justify-content:flex-end;">
+      <ion-button fill="outline" size="small">Volver</ion-button>
+    </div>
+
+  <!-- SIMULACIÓN: Si hay un fichaje activo en las últimas 12h -->
+  <div *ngIf="tieneFichajeActivo">
+
+    <ion-card color="warning">
+      <ion-card-header>
+        <ion-card-title>Fichaje en curso</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Trabajo</ion-label>
+          <ion-note slot="end">{{ fichajeActivo?.trabajo }}</ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Fecha/Hora Entrada</ion-label>
+          <ion-note slot="end">{{ fichajeActivo?.fechaEntrada | date:'short' }}</ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Ubicación entrada</ion-label>
+          <ion-note slot="end">{{ fichajeActivo?.latitud }}, {{ fichajeActivo?.longitud }}</ion-note>
+        </ion-item>
+
+        <div class="ion-text-center ion-margin-top">
+          <ion-button expand="block" color="primary" (click)="finalizarFichaje()">
+            Finalizar fichaje
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
 </ion-content>
