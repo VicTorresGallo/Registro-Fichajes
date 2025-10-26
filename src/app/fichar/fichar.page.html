@@ -34,8 +34,10 @@
         <!-- Geolocalización (simulada) -->
         <ion-item>
           <ion-label>Geolocalización</ion-label>
-          <ion-note slot="end">{{ latitud }}, {{ longitud }}</ion-note>
+          <ion-note slot="end">{{ direccionGeoreferenciada }}</ion-note>
         </ion-item>
+        <div id="mapid"></div>
+        
 
         <div class="ion-text-center ion-margin-top">
           <ion-button expand="block" color="success" (click)="iniciarFichaje()">
@@ -43,13 +45,15 @@
           </ion-button>
         </div>
 
+        
+
       </ion-card-content>
     </ion-card>
   </div>
 
-    <div [routerLink]="['/home']"style="margin-top:12px;display:flex;justify-content:flex-end;">
-      <ion-button fill="outline" size="small">Volver</ion-button>
-    </div>
+    <ion-button routerLink="/home" expand="block" fill="clear" size="small">
+      Volver    
+    </ion-button>
 
   <!-- SIMULACIÓN: Si hay un fichaje activo en las últimas 12h -->
   <div *ngIf="tieneFichajeActivo">

@@ -13,7 +13,7 @@
       <p class="ion-text-center">Selecciona una opción para continuar</p>
     </div>
 
-    <ion-card button [routerLink]="['/fichar']" aria-label="Registrar fichaje">
+    <ion-card [routerLink]="['/fichar']" aria-label="Registrar fichaje">
       <ion-card-header>
         <ion-card-subtitle>Acción rápida</ion-card-subtitle>
         <ion-card-title>Registrar fichaje</ion-card-title>
@@ -21,13 +21,13 @@
       <ion-card-content>
         Inicia o cierra tu fichaje. Se guardará la hora y la geolocalización.
         <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-          <ion-button fill="outline" size="small">Ir a fichar</ion-button>
+          <ion-button fill="outline" size="small" routerLink="/fichar">Ir a fichar</ion-button>
         </div>
       </ion-card-content>
     </ion-card>
 
 
-    <ion-card button [routerLink]="['/consultar']" aria-label="Consultar fichajes">
+    <ion-card [routerLink]="['/consultar']" aria-label="Consultar fichajes">
       <ion-card-header>
         <ion-card-subtitle>Historial</ion-card-subtitle>
         <ion-card-title>Consulta fichajes</ion-card-title>
@@ -35,7 +35,7 @@
       <ion-card-content>
         Consulta tus fichajes por día o por rango de fechas. Visualiza horas, trabajos y localizaciones.
         <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-          <ion-button fill="outline" size="small">Ver fichajes</ion-button>
+          <ion-button fill="outline" size="small" routerLink="/consultar">Ver fichajes</ion-button>
         </div>
       </ion-card-content>
     </ion-card>

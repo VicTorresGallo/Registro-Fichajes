@@ -1,60 +1,73 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonListHeader, IonLabel, IonItem, IonIcon, IonCardContent, IonCard } from '@ionic/angular/standalone';
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList,
+  IonListHeader, IonLabel, IonItem, IonIcon, IonCardContent, IonCard, IonDatetime } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
+import { ApiService } from '../services/api';
+import { Fichaje } from '../models/fichaje';
+
 @Component({
   selector: 'app-consultar',
   templateUrl: './consultar.page.html',
   styleUrls: ['./consultar.page.scss'],
   standalone: true,
-  imports: [IonCard, IonCardContent, IonIcon, IonItem, IonLabel, IonListHeader, IonList, IonButton, IonContent, IonHeader, RouterModule, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonDatetime, 
+    IonCard, IonCardContent, IonIcon, IonItem, IonLabel, IonListHeader,
+    IonList, IonButton, IonContent, IonHeader, RouterModule, IonTitle,
+    IonToolbar, CommonModule, FormsModule
+  ]
 })
 export class ConsultarPage implements OnInit {
 
-  fechaSeleccionada: string = new Date().toISOString(); // por defecto hoy
-  fichajes: any[] = []; // todos los fichajes (simulados)
-  fichajesFiltrados: any[] = []; // fichajes del día
+  fechaSeleccionada: string = new Date().toISOString(); // Hoy por defecto
+  fichajes: Fichaje[] = [];
+  fichajesFiltrados: Fichaje[] = [];
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    // Datos simulados (más adelante vendrán del backend)
-    this.fichajes = [
-      {
-        id: 1,
-        trabajo: 'Mantenimiento',
-        fechaHoraEntrada: new Date(),
-        fechaHoraSalida: new Date(Date.now() + 3 * 60 * 60 * 1000),
-        latitud: '38.345',
-        longitud: '-0.483'
-      },
-      {
-        id: 2,
-        trabajo: 'Atención al cliente',
-        fechaHoraEntrada: new Date(Date.now() - 86400000), // ayer
-        fechaHoraSalida: new Date(Date.now() - 86400000 + 4 * 60 * 60 * 1000),
-        latitud: '38.346',
-        longitud: '-0.484'
-      }
-    ];
+    this.cargarFichajes();
+  }
 
+  cargarFichajes() {
+    const idUsuario = 5;
+    this.apiService.getFichajesUsuario(idUsuario).subscribe({
+      next: (res: Fichaje[]) => {
+        console.log('📦 Fichajes cargados:', res);
+        this.fichajes = res.map(f => ({
+          ...f,
+          FechaHoraEntrada: new Date(f.FechaHoraEntrada),
+          FechaHoraSalida: f.FechaHoraSalida ? new Date(f.FechaHoraSalida) : null
+        }));
+        this.filtrarPorFecha();
+      },
+      error: (err: any) => {
+        console.error('Error al cargar fichajes:', err);
+      }
+    });
+  }
+  onFechaChange(event: any) {
+    this.fechaSeleccionada = event.detail.value.substring(0, 10); // YYYY-MM-DD
     this.filtrarPorFecha();
   }
 
   filtrarPorFecha() {
-    const fechaBase = new Date(this.fechaSeleccionada);
-    this.fichajesFiltrados = this.fichajes.filter(f => {
-      const fechaFichaje = new Date(f.fechaHoraEntrada);
-      return (
-        fechaFichaje.getFullYear() === fechaBase.getFullYear() &&
-        fechaFichaje.getMonth() === fechaBase.getMonth() &&
-        fechaFichaje.getDate() === fechaBase.getDate()
-      );
-    });
-  }
+    if (!this.fechaSeleccionada) return;
 
-  verMapa(fichaje: any) {
-    alert(`Mapa (simulado): ${fichaje.latitud}, ${fichaje.longitud}`);
+    const fechaBase = new Date(this.fechaSeleccionada);
+    const año = fechaBase.getFullYear();
+    const mes = fechaBase.getMonth();
+    const dia = fechaBase.getDate();
+
+    this.fichajesFiltrados = this.fichajes.filter(f => {
+      const fechaEntrada = new Date(f.FechaHoraEntrada);
+      return fechaEntrada.getFullYear() === año &&
+             fechaEntrada.getMonth() === mes &&
+             fechaEntrada.getDate() === dia;
+    });
+
+    console.log('📅 Filtro aplicado:', fechaBase, this.fichajesFiltrados);
   }
 }
